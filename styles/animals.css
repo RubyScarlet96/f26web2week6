@@ -45,6 +45,13 @@
 /********************************
 			Custom Properties
 ********************************/
+/* :root is a style that applies to all your CSS/HTML  
+-- signifies that you've created a variable but aren't neccessarly necessary but are widely used*/
+:root{
+	/* you can use these value in your code as many times as you like */
+	--mud-brown:#543401;
+
+}
 
 
 
@@ -102,9 +109,15 @@ main{
 	/* corner-shape: notch; - corner shape allows you to contorl the style of the inner border:
 	round, squircle, square, bevel, scoop, notch....resource: https://css-tricks.com/almanac/properties/c/corner-shape/ */
 
-	border: 25px solid #543401;
 
-	border-radius: 25px;
+    /* the var calls a custom property you set */
+
+	border: 25px solid var(--mud-brown);
+	border-top: 0;
+
+	border-bottom-left-radius: 25px;
+	border-bottom-right-radius: 25px;
+	
 
 	/* for box shadow, the values are:
 	type
@@ -144,4 +157,152 @@ main section:nth-child(2n){
 	/* justify-self only works because we set up a grid on the main element */
 	justify-self:end;
 }
+
+
+/* ***********************************
+    TAPE EFFECT AND PSEUDO ELEMENTS 
+	************************************/
+
+article{
+		background:white;
+		border: 1px solid #aaa;
+		box-shadow: 2px 2px 4px rgb(50,50,50);
+}
+
+header article{
+	/* one value for padding or margin means all sides 2 values means top and bottom, left and right */
+	padding: 10px;
+	margin: 20px 0;
+}
+
+section article{
+	padding: 23px;
+	position: relative;
+	/* make this position relative, so it will
+	hold tthe position:absoloute pseduo elements we are going to put inside it */
+}
+section article img{
+	/* a space means go inside the element- this targets only images inside of article inside of sections */
+	max-width:100%;
+}
+
+section article::before{
+	/* :: before is pseudo element - every HTML element has a ::before and a :: after */
+	content:" ";
+	/* before and after don't exist until you put content in them, but you can add just an empty space if you don't want text */
+	width: 160px;
+	height: 45px;
+	/* with rgb and hsl, you can add an alpha channel or transparency 
+	the alpha channel is a value between 0 and 1, where 1 is fully opaque and 0 is fully transparent*/
+	background-color:rgba(222,222,222,0.6);
+
+	/* pseudo elements have to be positioned using absoloute */
+	position:absolute;
+	left: calc(50% - 80px);
+	/* calc lets you add or subrtact differen unit types - must put spaces around the + or -  */
+	top: -23px;
+	/* negative values to push it up, rather than down */
+
+	transform: rotate(-15deg);
+
+}
+
+/* ****outer pseudo classes include: first-line, first-letter, and select */
+
+h1 span{
+	/* ::first-letter only works on block elements, so if you use spans,
+	you have to make them block */
+	display:block;
+
+}
+
+h1 span::first-letter{
+	font-family:'Moo Lah Lah', cursive;
+	font-size:1.3em;
+}
+
+p::selection{
+	/* changes the colour when you highlight the text */
+	color:#e7a82a;
+	background-color: #543401;
+}
+
+/* *************direct selectors and a drop down nav************** */
+
+nav {
+	font-size:2em;
+	/* em is a realtive measure based on font size - 2em = 2 times the size of the font */
+
+	width:960px;
+	margin: 0 auto;
+
+	background:var(--mud-brown);
+
+	border-top-right-radius: 25px;
+	border-top-left-radius: 25px;
+
+	/* position: sticky will make it "stick" to the top of the page, so it will always be there when you scroll */
+
+	position:sticky;
+	top:0; 
+	/* tells is where to stick */
+	z-index: 10;
+	/* z-index is like layers, but they are arbitrary....
+	by default everything is on layer 1, and anything higher is "on-top" */
+
+	height:55px;
+
+}
+
+nav > ul{
+	/* > tells it to select only the direct child of the nav */
+    display:flex;
+	justify-content:flex-end;
+	padding-top: 20px;
+}
+
+/* select only the li that are direct children of the ul, which is a direct child of the nav */
+nav > ul >li {
+	padding:0 10px;
+	position: relative;
+	/* position: relative to it will hold the absoloutley positioned dropdown */
+}
+
+nav ul ul{
+	display:none;
+
+}
+
+nav ul li:hover ul{
+	display:block;
+	position:absolute;
+	background-color: var(--mud-brown);
+}
+
+nav a{
+	color: white;
+	text-decoration:none;
+	/* removes underline */
+}
+
+/* ******************attribute selectors****************** */
+
+/* attribute selectors grab part of an HTML attribute....
+a [href] targets any a tag with a href (regardless of the value of that href)
+or by value:
+=means matches exactly;
+^= means begins with
+$= means ends with
+*=means contains */
+
+/* select all the links with an hreff containing the word "wiki" */
+a[href*="wiki"]{
+	background-image:url("../images/wikipedia-icon.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+	/* contain makes image the smallest width and height, cover does the opposite and may cut off parts of the image */
+	background-position: top left;
+	padding-left: 1.5em;
+}
+
 
